@@ -4,7 +4,6 @@ metadata:
   labels:
     app: getcategories
   name: getcategories
-  namespace: netcandystore-prd
 spec:
   replicas: 1
   selector:
