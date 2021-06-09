@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: netcandystore
+  name: netcandystore
+spec:
+  port:
+    targetPort: 80
+  to:
+    kind: Service
+    name: netcandystore
+    weight: 100
+  wildcardPolicy: None
