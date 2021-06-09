@@ -4,7 +4,7 @@ metadata:
   labels:
     app: netcandystore
   name: netcandystore
-  namespace: netcandystore
+  namespace: netcandystore-prd
 spec:
   replicas: 1
   selector:

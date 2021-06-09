@@ -4,7 +4,7 @@ metadata:
   labels:
     app: getcategories
   name: getcategories
-  namespace: netcandystore
+  namespace: netcandystore-prd
 spec:
   ports:
   - name: 8080-tcp
