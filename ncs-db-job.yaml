@@ -28,3 +28,4 @@ spec:
         image: quay.io/redhatworkshops/netcandystore-db-bootstrapper:latest
         imagePullPolicy: Always
         name: netcandystore-db-bootstrapper
+      restartPolicy: Never
