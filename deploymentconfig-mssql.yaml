@@ -1,0 +1,91 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: mssql
+  namespace: netcandystore
+spec:
+  replicas: 1
+  selector:
+    name: mssql
+  strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: mssql
+      name: mssql
+    spec:
+      containers:
+      - env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_PID
+          value: Developer
+        - name: SA_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: SA_PASSWORD
+              name: mssql-secret
+        - name: MSSQL_SERVICE
+          valueFrom:
+            secretKeyRef:
+              key: SERVICE_NAME
+              name: mssql-secret
+        image: mcr.microsoft.com/mssql/rhel/server:2019-latest
+        imagePullPolicy: IfNotPresent
+        name: db
+        ports:
+        - containerPort: 1433
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/opt/mssql
+          name: mssql-data
+        - mountPath: /tmp
+          name: tempdir
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - /bin/bash
+        - -c
+        - |
+          url=${URLPREFIX}
+          csvfiles=(StatusCodes.csv ProductCategories.csv Products.csv)
+          echo "Downloading CSV files"
+          echo "====================="
+          for csvfile in ${csvfiles[@]}
+          do
+            curl ${url}/${csvfile} --output /tmp/${csvfile}
+            chmod 777 /tmp/${csvfile}
+          done
+        env:
+        - name: URLPREFIX
+          value: https://raw.githubusercontent.com/DonSchenck/NetCandyStore/main
+        image: registry.access.redhat.com/ubi8/ubi:latest
+        imagePullPolicy: Always
+        name: csv-downloader
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp
+          name: tempdir
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: mssql-data
+        persistentVolumeClaim:
+          claimName: mssql-pvc
+      - emptyDir: {}
+        name: tempdir
+  test: false
+  triggers:
+  - type: ConfigChange

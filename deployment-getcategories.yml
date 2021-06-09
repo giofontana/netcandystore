@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: getcategories
+  name: getcategories
+  namespace: netcandystore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: getcategories
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: getcategories
+        deploymentconfig: getcategories
+    spec:
+      containers:
+      - env:
+        - name: DBConnectionString
+          value: Server=mssql;Initial Catalog=CandiesDB;Persist Security Info=False;User ID=sa;Password=reallylongpassword99!;
+        image: quay.io/donschenck/getcategories@sha256:c8f3026ee6f88299580ffac278d0190926634a045985f47728ae051e4bca0c90
+        imagePullPolicy: IfNotPresent
+        name: getcategories
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

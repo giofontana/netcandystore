@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: netcandystore
+  name: netcandystore
+  namespace: netcandystore
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netcandystore
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: netcandystore
+      name: netcandystore
+    spec:
+      containers:
+      - env:
+        - name: categoriesMicroserviceURL
+          value: http://getcategories:8080/categories
+        image: quay.io/donschenck/netcandystore:2021mar8.1
+        imagePullPolicy: Always
+        name: netcandystore
+        resources: {}
+        securityContext:
+          windowsOptions:
+            runAsUserName: ContainerAdministrator
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        beta.kubernetes.io/os: windows
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: os
+        value: Windows
