@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: netcandystore-db-bootstrapper
+spec:
+  backoffLimit: 6
+  completions: 1
+  parallelism: 1
+  selector:
+  template:
+    metadata:
+      labels:
+        job-name: netcandystore-db-bootstrapper
+    spec:
+      containers:
+      - command:
+        - /bin/bash
+        - -c
+        - |
+          /usr/local/bin/bootstrapdb.sh
+        env:
+        - name: URLPREFIX
+          value: https://raw.githubusercontent.com/DonSchenck/NetCandyStore/main
+        - name: DBPASS
+          value: reallylongpassword99!
+        - name: DBHOST
+          value: mssql
+        image: quay.io/redhatworkshops/netcandystore-db-bootstrapper:latest
+        imagePullPolicy: Always
+        name: netcandystore-db-bootstrapper
