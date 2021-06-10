@@ -1,5 +1,5 @@
 namespace: netcandy
-namePrefix: rh-demo-
+#namePrefix: rh-demo-
 commonLabels:
   app: netcandystore
 
@@ -15,13 +15,4 @@ resources:
 - ncs-service.yaml
 - ncs-route.yaml
 
-vars:
-- name: MSSQL_PVC_NAME
-  objref:
-    kind: PersistentVolumeClaim
-    name: mssql-pvc
-    apiVersion: v1
-  fieldref:
-    fieldpath: metadata.name    
 
-    
