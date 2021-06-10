@@ -1,0 +1,23 @@
+namespace: netcandy
+namePrefix: prd-
+commonLabels:
+  app: netcandystore
+
+resources:
+- ncs-prepull-image-job.yaml
+- pvc-mssql.yaml
+- mssql-secret.yaml
+- mssql-dc.yaml
+- mssql-service.yaml
+- gc-deployment.yaml
+- gc-service.yaml
+- ncs-db-job.yaml
+- ncs-deployment.yaml
+- ncs-service.yaml
+- ncs-route.yaml
+
+#secretGenerator:
+#- name: windows-ssh-key
+#  files:
+#  - private-key.pem
+
