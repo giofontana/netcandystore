@@ -1,0 +1,9 @@
+namespace: netcandy-dev
+#namePrefix: rh-demo-
+#commonLabels:
+#  app: netcandystore
+
+bases:
+- ../../base
+
+
