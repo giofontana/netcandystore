@@ -1,7 +1,7 @@
 namespace: netcandy
 #namePrefix: rh-demo-
-commonLabels:
-  app: netcandystore
+#commonLabels:
+#  app: netcandystore
 
 resources:
 - pvc-mssql.yaml
