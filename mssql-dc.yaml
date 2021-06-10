@@ -67,6 +67,6 @@ spec:
       volumes:
       - name: mssql-data
         persistentVolumeClaim:
-          claimName: mssql-pvc
+          claimName: "$(MSSQL_PVC_NAME)"
       - name: tempdir
         emptyDir: {}
