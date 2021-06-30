@@ -1,7 +1,7 @@
 # netcandystore
 
-kubectl kustomize ./base
+kubectl kustomize ./manifests/base
 
-kubectl kustomize ./overlays/dev
-kubectl kustomize ./overlays/staging
-kubectl kustomize ./overlays/prod
+kubectl kustomize ./manifests/overlays/dev
+kubectl kustomize ./manifests/overlays/staging
+kubectl kustomize ./manifests/overlays/prod
