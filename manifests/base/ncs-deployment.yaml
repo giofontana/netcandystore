@@ -24,7 +24,7 @@ spec:
       - env:
         - name: categoriesMicroserviceURL
           value: http://getcategories:8080/categories
-        image: quay.io/donschenck/netcandystore:2021mar8.1
+        image: quay.io/gfontana/netcandystore:servercore1909
         imagePullPolicy: Always
         name: netcandystore
         resources: {}
